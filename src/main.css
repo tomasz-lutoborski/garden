@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@source "./**/*.{clj,cljs,cljc}";
+@plugin "daisyui" {
+  themes: caramellatte --default, luxury --prefersdark;
+}
+
+.todo-card {
+  @apply bg-pink-100 rounded-lg p-4 flex flex-row justify-between items-center;
+}
+
+.todo-check {
+  @apply text-xl w-8 h-8 rounded-md border-indigo-950 border bg-pink-300 flex justify-center items-center;
+}
