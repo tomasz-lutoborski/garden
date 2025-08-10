@@ -16,9 +16,11 @@
      :stroke-linecap "round",
      :stroke-linejoin "round"}]])
 
-(defn render-todo [data]
+(defn render-todo [{:keys [title status]}]
   [:div.todo-card
-   [:h2.text-xl.text-indigo-950 (:title data)]
+   [:h2.text-xl.text-indigo-950 title]
    [:input.checkbox.checkbox-lg
     {:type "checkbox"
-     :checked (= (:status data) :done)}]])
+     :checked (= status :done)}]
+   [:button.btn
+    {:on {:click [:clicked-todo title status]}}]])
