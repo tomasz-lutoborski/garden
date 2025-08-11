@@ -28,13 +28,13 @@ node_modules:
 
 shadow: node_modules
     # Watch both builds and serve at http://localhost:{{port}}/
-    npx shadow-cljs watch app portfolio
+    npx shadow-cljs -A:dev watch app-dev portfolio
 
 tailwind: node_modules
 	npx @tailwindcss/cli -i ./src/main.css -o ./resources/public/styles.css --watch
 
 app:
-    npx shadow-cljs watch app
+    npx shadow-cljs -A:dev watch app-dev
 
 portfolio:
     npx shadow-cljs watch portfolio

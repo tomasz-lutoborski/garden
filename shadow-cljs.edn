@@ -1,12 +1,22 @@
 {:deps {}
+ :nrepl {:port 8777}
  :dev-http {8080 ["resources/public" "classpath:public"]}
  :builds
  {:app
   {:target :browser
    :modules {:main {:init-fn garden.core/main}}
-   :dev {:output-dir "resources/public/app-js"}}
+   :dev {:output-dir "resources/public/app-js"
+         :asset-path "/app-js"}}
+
+  :app-dev
+  {:target :browser
+   :modules {:main {:init-fn garden.dev/main}}
+   :devtools {:after-load garden.dev/reload!}
+   :dev {:output-dir "resources/public/app-js"
+         :asset-path "/app-js"}}
 
   :portfolio
   {:target :browser
    :modules {:main {:init-fn garden.scenes/main}}
-   :dev {:output-dir "resources/public/portfolio-js"}}}}
+   :dev {:output-dir "resources/public/portfolio-js"
+         :asset-path "/portfolio-js"}}}}

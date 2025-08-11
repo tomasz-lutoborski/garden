@@ -1,4 +1,8 @@
-(ns garden.ui)
+(ns garden.ui.todo)
+
+(defn perform-action [state action]
+  (when (= ::task-done action)
+    (:effect/assoc-in [:task-done] (inc (:task state)))))
 
 (def check-icon
   [:svg
@@ -16,10 +20,11 @@
      :stroke-linecap "round",
      :stroke-linejoin "round"}]])
 
-(defn render-todo [{:keys [title status]}]
+(defn render-ui [{:keys [title status]}]
   [:div.todo-card
    [:h2.text-xl.text-indigo-950 title]
    [:input.checkbox.checkbox-lg
     {:type "checkbox"
      :checked (= status :done)
-     :on {:click [:clicked-todo title status]}}]])
+     :on {:click [[::task-done]]}}]])
+
