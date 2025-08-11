@@ -21,6 +21,5 @@
    [:h2.text-xl.text-indigo-950 title]
    [:input.checkbox.checkbox-lg
     {:type "checkbox"
-     :checked (= status :done)}]
-   [:button.btn
-    {:on {:click [:clicked-todo title status]}}]])
+     :checked (= status :done)
+     :on {:click [:clicked-todo title status]}}]])

@@ -15,11 +15,14 @@
                                :id (random-uuid)
                                :status :not-done}]}))
 
+(swap! store assoc :message "heloo")
+
 ;; ------------------------------------------------------------
 ;; Render function
 
 (defn render [state]
   [:main
+   [:h1 (:message state)]
    (for [todo (:todos state)]
      (ui/render-todo todo))])
 
@@ -29,17 +32,14 @@
 (defn ^:export main []
   (let [el (js/document.getElementById "app")]
 
-    (r/render el (render @store))
+    #_(r/set-dispatch!
+       (fn [event-data handler-data]
+         (when (= :replicant.trigger/dom-event (:replicant/trigger event-data))
+           (prn :event (:replicant/dom-event event-data)
+                :handler handler-data))))
 
-    (r/set-dispatch!
-     (fn [event-data handler-data]
-       (when (= :replicant.trigger/dom-event
-                (:replicant/trigger event-data))
-         (println "Event triggered!")
-         (println "Event:" (:replicant/dom-event event-data))
-         (println "Node:" (:replicant/node event-data))
-         (println "Handler data:" handler-data))))
+    (r/render el (render @store))
 
     (add-watch store ::render
                (fn [_ _ _ new-state]
-                 (r/render el new-state)))))
+                 (r/render el (render new-state))))))
