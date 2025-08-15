@@ -44,23 +44,31 @@
             (reduce (fn [s [path value]]
                       (assoc-in s path value)) state path-values)))))
 
+(nxr/register-effect!
+ :actions/prevent-default
+ (fn [{:keys [dispatch-data]}]
+   (some-> dispatch-data :replicant/dom-event .preventDefault)))
+
+(nxr/register-action!
+ ::todo/task-create
+ (fn [arg1 arg2 arg3]
+   (prn arg1 arg2 arg3)))
+
 (nxr/register-system->state! deref)
 ;; ------------------------------------------------------------
 ;; Main function
 
-(defn init [store]
-  (let [el (js/document.getElementById "app")]
-
-    (r/set-dispatch!
-     (fn [dispatch-data actions]
-       (nxr/dispatch store dispatch-data actions)))
+(defn main [store el]
+  (r/set-dispatch!
+   (fn [dispatch-data actions]
+     (nxr/dispatch store dispatch-data actions)))
 
 
-    (add-watch store ::render
-               (fn [_ _ _ new-state]
-                 (r/render el (render new-state))))
+  (add-watch store ::render
+             (fn [_ _ _ new-state]
+               (r/render el (render new-state))))
 
-    (swap! store assoc :loaded-at (.getTime (js/Date.)))))
+  (swap! store assoc :loaded-at (.getTime (js/Date.))))
 
 
 (comment

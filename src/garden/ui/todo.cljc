@@ -50,7 +50,8 @@
      :placeholder "What do you plan to do?"}]
    [:input.btn
     {:type "submit"
-     :on {:click [[::task-create]]}}]])
+     :on {:click [[::task-create "hello"]
+                  [:actions/prevent-default]]}}]])
 
 (defn render-ui [todos]
   [:div.flex.gap-4.flex-col
