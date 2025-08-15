@@ -1,6 +1,7 @@
 (ns garden.core
   (:require [replicant.dom :as r]
             [garden.ui.todo :as todo]
+            [nexus.registry :as nxr]
             [garden.ui.counter :as counter]
             [garden.ui.layout :as layout]))
 
@@ -21,33 +22,29 @@
     [:main.flex.gap-4.flex-col.p-12
      (layout/tab-bar current-view views)
      (case current-view
-       ;;  :todos
-       ;;  (for [todo (:todos state)]
-       ;;    (todo/render-ui todo))
+       :todos
+       (todo/render-ui (:todos state))
 
        :counters
        (counter/render-ui state)
 
        [:h1.text-lg "Choose your activity"])]))
 
+(nxr/register-action!
+ ::counter/inc
+ (fn [state path]
+   [[:store/assoc-in path (inc (get-in state path))]]))
 
-(defn perform-actions [state event-data]
-  (mapcat
-   (fn [action]
-     (prn (first action) (rest action))
-     (or (counter/perform-action state action)
-         (case (first action)
-           :action/assoc-in
-           [(into [:effect/assoc-in] (rest action))]
+(nxr/register-effect!
+ :store/assoc-in
+ ^:nexus/batch
+ (fn [_ store path-values]
+   (swap! store
+          (fn [state]
+            (reduce (fn [s [path value]]
+                      (assoc-in s path value)) state path-values)))))
 
-           "unknown action")))
-   event-data))
-
-(defn process-effects [store [effect & args]]
-  (case effect
-    :effect/assoc-in
-    (apply swap! store assoc-in args)))
-
+(nxr/register-system->state! deref)
 ;; ------------------------------------------------------------
 ;; Main function
 
@@ -55,9 +52,8 @@
   (let [el (js/document.getElementById "app")]
 
     (r/set-dispatch!
-     (fn [_ event-data]
-       (->> (perform-actions @store event-data)
-            (run! #(process-effects store %)))))
+     (fn [dispatch-data actions]
+       (nxr/dispatch store dispatch-data actions)))
 
 
     (add-watch store ::render
@@ -68,4 +64,13 @@
 
 
 (comment
-  (layout/tab-bar :todos views))
+  (layout/tab-bar :todos views)
+  (defonce store (atom {:urge-redirects 0
+                        :todos [{:title "List todos"
+                                 :note "Render list of all todos"
+                                 :id 1
+                                 :status :not-done}
+                                {:title "Create todo"
+                                 :note "Be able to create new todo"
+                                 :id 2
+                                 :status :not-done}]})))
