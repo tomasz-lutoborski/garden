@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Task } from '@/stores/workflow'
+import type { Task } from '@/features/tasks/store'
 
 type Slot = 0 | 1 | 2
 
@@ -30,13 +30,13 @@ const emit = defineEmits<{
           </button>
           <button
             class="px-2 py-1 border rounded"
-            @click="emit('move-to-slot', { taskId: t.id, slot: 0 })"
+            @click="emit('move-to-slot', { taskId: t.id, slot: 1 })"
           >
             to 2
           </button>
           <button
             class="px-2 py-1 border rounded"
-            @click="emit('move-to-slot', { taskId: t.id, slot: 0 })"
+            @click="emit('move-to-slot', { taskId: t.id, slot: 2 })"
           >
             to 3
           </button>

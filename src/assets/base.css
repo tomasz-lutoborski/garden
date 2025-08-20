@@ -1,8 +1,5 @@
 /* color palette from <https://github.com/vuejs/theme> */
 
-@import 'tailwindcss';
-@import 'tailwindcss-primeui';
-
 /* Primary and Surface Palettes */
 :root {
   --p-primary-50: #ecfdf5;
@@ -136,7 +133,13 @@
   font-weight: normal;
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  margin: 0;
+  overflow: hidden;
   min-height: 100vh;
   transition:
     color 0.5s,
@@ -160,3 +163,4 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+

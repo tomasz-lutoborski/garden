@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { uid } from '@/lib/uid'
+import { uid } from '@/shared/lib/uid'
 
 export type Task = { id: string; title: string }
 

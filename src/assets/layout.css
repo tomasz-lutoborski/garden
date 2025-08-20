@@ -1,0 +1,42 @@
+:root {
+  --hdr: 56px;
+  --left: 400px;
+  --right: 400px;
+}
+
+/* App shell: global, stable */
+.app-shell {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: var(--hdr) 1fr;
+  grid-template-columns: var(--left) minmax(0, 1fr) var(--right);
+}
+
+/* Grid areas or explicit placement, your call */
+.app-header {
+  grid-column: 1 / -1;
+}
+.app-left {
+  grid-row: 2;
+}
+.app-main {
+  grid-row: 2;
+}
+.app-right {
+  grid-row: 2;
+}
+
+/* Panes scroll locally and never expand tracks */
+.pane {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* Handy utility you’ll reuse */
+.nowrap-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
