@@ -1,0 +1,26 @@
+# Clojure/Java
+target/
+classes/
+*.jar
+*.class
+.cpcache/
+.nrepl-port
+
+# IDE / Editor
+.idea/
+*.iml
+.vscode/
+.calva/
+*.swp
+*~
+
+# Linting cache
+.clj-kondo/
+.lsp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+garden.jar
