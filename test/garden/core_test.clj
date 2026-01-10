@@ -14,7 +14,13 @@
   (testing "returns empty meta when no frontmatter"
     (let [result (posts/parse-frontmatter "Just body content")]
       (is (= {} (:meta result)))
-      (is (= "Just body content" (:body result))))))
+      (is (= "Just body content" (:body result)))))
+
+  (testing "parses stage and visibility fields"
+    (let [content "---\ntitle: Test\nstage: growing\nvisibility: unlisted\n---\nBody"
+          result (posts/parse-frontmatter content)]
+      (is (= "growing" (get-in result [:meta "stage"])))
+      (is (= "unlisted" (get-in result [:meta "visibility"]))))))
 
 (deftest index-page-test
   (testing "returns 200 status"
@@ -26,3 +32,10 @@
   (testing "returns 404 for non-existent post"
     (let [response (pages/post-page {:path-params {:slug "non-existent-post-xyz"}})]
       (is (= 404 (:status response))))))
+
+(deftest stage-badge-test
+  (testing "returns correct emoji for each stage"
+    (is (= "🌱" (pages/stage-badge "seedling")))
+    (is (= "🌿" (pages/stage-badge "growing")))
+    (is (= "🌳" (pages/stage-badge "evergreen")))
+    (is (= "🌱" (pages/stage-badge "unknown")))))

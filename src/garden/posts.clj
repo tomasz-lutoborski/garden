@@ -29,6 +29,8 @@
     {:slug slug
      :title (get meta "title" slug)
      :date (get meta "date" (subs slug 0 10))
+     :stage (get meta "stage" "seedling")
+     :visibility (get meta "visibility" "public")
      :body body
      :html (md/md-to-html-string body)}))
 
@@ -42,7 +44,17 @@
        (sort-by :date)
        reverse))
 
+(defn public-posts
+  "Load only posts with visibility 'public', sorted by date descending."
+  []
+  (filter #(= "public" (:visibility %)) (load-posts)))
+
+(defn posts-by-stage
+  "Filter posts by their stage (seedling, growing, evergreen)."
+  [stage]
+  (filter #(= stage (:stage %)) (load-posts)))
+
 (defn find-post
-  "Find a post by slug."
+  "Find a post by slug. Returns post regardless of visibility."
   [slug]
   (first (filter #(= slug (:slug %)) (load-posts))))

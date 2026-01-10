@@ -1,6 +1,8 @@
 ---
 title: Wszystkie problemy AI
 date: 11-12-2025
+stage: growing
+visibility: public
 ---
 
 Zacząć muszę od deklaracji, która dla wielu jest dyskwalifikująca: kocham AI. Mówię to z dużą dozą powściągliwości, bo zdaję sobie sprawę, że lokuje mnie to w jednej drużynie z gromadą, z którą w większości nie chcę mieć nic wspólnego: tech-brosami, dla których AI jest jedyną drogą zbawienia ludzkości, autorytarnymi obłąkańcami, którzy wiążą z AI nadzieję bezprecedensowego pomnożenia swojej kontroli społecznej i CEO oddannymi w pełni rynkowym wymaganiom wzrostu przy redukcji kosztów - na przykład kosztów płacenia ludzkim pracownikom.
