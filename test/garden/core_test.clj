@@ -1,5 +1,7 @@
 (ns garden.core-test
   (:require [clojure.test :refer [deftest is testing]]
+            [clojure.java.io :as io]
+            [clojure.string :as str]
             [garden.posts :as posts]
             [garden.views.pages :as pages]))
 
@@ -32,6 +34,23 @@
   (testing "returns 404 for non-existent post"
     (let [response (pages/post-page {:path-params {:slug "non-existent-post-xyz"}})]
       (is (= 404 (:status response))))))
+
+(deftest posts-cache-test
+  (testing "does not re-parse posts when unchanged"
+    (posts/clear-cache!)
+    (let [md-count (->> (file-seq (io/file posts/posts-dir))
+                        (filter #(.isFile ^java.io.File %))
+                        (filter #(str/ends-with? (.getName ^java.io.File %) ".md"))
+                        count)
+          parse-count (atom 0)
+          orig-load-post posts/load-post]
+      (with-redefs [posts/load-post (fn [file]
+                                      (swap! parse-count inc)
+                                      (orig-load-post file))]
+        (doall (posts/public-posts))
+        (is (= md-count @parse-count))
+        (doall (posts/public-posts))
+        (is (= md-count @parse-count))))))
 
 (deftest stage-badge-test
   (testing "returns correct emoji for each stage"
